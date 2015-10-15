@@ -1,4 +1,3 @@
-#![feature(core)]
 #![feature(core_str_ext)]
 #![feature(libc)]
 #![feature(no_std)]
