@@ -4,7 +4,6 @@
 
 #![no_std]
 
-extern crate core;
 extern crate libc;
 
 #[macro_use]
