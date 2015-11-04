@@ -2,7 +2,7 @@ RUST_ROOT :=
 
 -include ./config.mk
 
-RC := $(RUST_ROOT)/bin/rustc
+RC := rustc
 RCFLAGS := -O -C code-model=kernel -C relocation-model=static
 
 
