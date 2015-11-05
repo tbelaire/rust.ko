@@ -8,7 +8,7 @@ RCFLAGS := -O -C code-model=kernel -C relocation-model=static
 
 KER = $(shell uname -r)
 OBJ = hello
-RMODS = macros.rs raw/*.rs
+RMODS = macros.rs lang_items.rs raw/*.rs
 
 obj-m = ${OBJ}.o
 hello-objs := stub.o main.o
