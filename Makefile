@@ -15,10 +15,10 @@ hello-objs := stub.o main.o
 
 all: ${OBJ}.ko
 
-${OBJ}.ko: stub.c main.o ${RMODS}
+${OBJ}.ko: stub.c main.o
 	make -C /lib/modules/$(KER)/build M=$(PWD) modules
 
-%.o: %.rs
+%.o: %.rs ${RMODS}
 	$(RC) $(RCFLAGS) --crate-type lib -o $@ --emit obj $<
 
 insmod:
