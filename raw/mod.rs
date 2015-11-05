@@ -16,3 +16,4 @@ pub mod mm_types;
 pub mod kernel;
 pub mod pipe_fs_i;
 pub mod device;
+pub mod delay;
