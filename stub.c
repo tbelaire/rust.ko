@@ -5,6 +5,7 @@
 #include <linux/bug.h>
 #include <linux/fs.h>
 #include <linux/cdev.h>
+#include <linux/device.h>
 
 char __morestack[1024];
 char _GLOBAL_OFFSET_TABLE_;
@@ -109,4 +110,8 @@ void rustko_extended_cdev_init(
 
 struct module* rustko_this_module(void) {
     return THIS_MODULE;
+}
+
+struct class *rustko_class_create(struct module *owner, const char *name) {
+    return class_create(owner, name);
 }
