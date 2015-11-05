@@ -41,7 +41,7 @@ static void hello_exit(void)
 module_init(hello_init);
 module_exit(hello_exit);
 
-MODULE_LICENSE("MIT");
+MODULE_LICENSE("Dual MIT/GPL");
 
 void rustko_extended_cdev_init(
     struct cdev * cdev,
