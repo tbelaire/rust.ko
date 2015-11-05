@@ -23,7 +23,7 @@ pub enum file_operations {}
 
 extern {
     pub fn cdev_alloc() -> *mut cdev;
-    pub fn cdev_init(cdev: *mut cdev, fops: *const file_operations);
+    //pub fn cdev_init(cdev: *mut cdev, fops: *const file_operations);
     pub fn cdev_add(cdev: *mut cdev, dev: dev_t, count: c_uint) -> c_int;
     pub fn cdev_del(cdev: *mut cdev);
     pub fn rustko_extended_cdev_init(
