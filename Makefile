@@ -51,9 +51,13 @@ clean:
 	rm -rf "${BUILD_DIRECTORY}"
 	$(CARGO) clean
 
-test: ${KERNEL_MODULE}.ko
+testebbchar : tests/testebbchar.c
+	gcc src/testebbchar.c -o testebbchar
+
+test: ${KERNEL_MODULE}.ko testebbchar
 	sudo insmod "${KERNEL_MODULE}.ko"
+	sudo ./testebbchar
 	sudo rmmod  "${KERNEL_MODULE}"
-	dmesg | tail -3
+	dmesg | tail -10
 
 .PHONY: all modules clean insmod rmmod test
