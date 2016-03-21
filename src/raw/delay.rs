@@ -1,4 +1,4 @@
-use libc::c_uint;
+use types::c_uint;
 
 extern {
     pub fn msleep(msecs: c_uint);

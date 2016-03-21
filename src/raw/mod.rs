@@ -1,7 +1,7 @@
-use libc::{c_char,c_longlong};
+use types::{c_char};
 
+#[allow(non_camel_case_types)]
 pub enum module {}
-pub type loff_t = c_longlong; // http://lxr.free-electrons.com/source/include/uapi/asm-generic/posix_types.h#L87
 
 extern {
     pub fn printk(fmt: *const c_char);

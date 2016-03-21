@@ -1,6 +1,7 @@
-use super::module;
-use libc::c_char;
+use raw::module;
+use types::{c_char};
 
+#[allow(non_camel_case_types)]
 pub enum class {}
 
 extern {

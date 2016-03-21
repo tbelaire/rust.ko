@@ -1,5 +1,4 @@
-use libc::{
-    self,
+use types::{
     dev_t,
     c_uint,
     c_char,
@@ -24,7 +23,7 @@ impl CharacterDevice {
 
             cdev::rustko_extended_cdev_init(
                 cdev,
-                unsafe { raw::rustko_this_module() },
+                raw::rustko_this_module(),
                 None,
                 None,
                 None,

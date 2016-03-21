@@ -1,9 +1,8 @@
-use libc::*;
-use super::{
+use types::*;
+use raw::{
     module,
-    loff_t
 };
-use super::fs::{
+use raw::fs::{
     file,
     seq_file,
     kiocb,
@@ -12,13 +11,15 @@ use super::fs::{
     fl_owner_t,
     file_lock
 };
-use super::uio::iov_iter;
-use super::poll::poll_table_struct;
-use super::mm_types::vm_area_struct;
-use super::kernel::page;
-use super::pipe_fs_i::pipe_inode_info;
+use raw::uio::iov_iter;
+use raw::poll::poll_table_struct;
+use raw::mm_types::vm_area_struct;
+use raw::kernel::page;
+use raw::pipe_fs_i::pipe_inode_info;
 
+#[allow(non_camel_case_types)]
 pub enum cdev {}
+#[allow(non_camel_case_types)]
 pub enum file_operations {}
 
 extern {
@@ -30,8 +31,8 @@ extern {
         cdev: *mut cdev,
         owner: *mut module,
         llseek: Option<extern fn(*mut file, loff_t, c_int) -> loff_t>,
-        read: Option<extern fn(*mut file, /* __user */ *mut char, size_t, *mut loff_t) -> ssize_t>,
-        write: Option<extern fn(*mut file, /* __user */ *const char, size_t, *mut loff_t) -> ssize_t>,
+        read: Option<extern fn(*mut file, /* __user */ *mut c_char, size_t, *mut loff_t) -> ssize_t>,
+        write: Option<extern fn(*mut file, /* __user */ *const c_char, size_t, *mut loff_t) -> ssize_t>,
         read_iter: Option<extern fn(*mut kiocb, *mut iov_iter) -> ssize_t>,
         write_iter: Option<extern fn(*mut kiocb, *mut iov_iter) -> ssize_t>,
         iterate: Option<extern fn(*mut file, *mut dir_context) -> c_int>,
