@@ -22,7 +22,7 @@ use core::str::StrExt;
 
 #[no_mangle]
 pub fn rust_main() {
-    println!("Hello from Rust!++");
+    println!("Hello  %d from %d Rust!++", 42, 0);
 }
 
 #[no_mangle]
