@@ -19,31 +19,26 @@ pub mod types;
 use types :: *;
 
 use core::str::StrExt;
+use core::sync::atomic::{AtomicUsize, Ordering, ATOMIC_USIZE_INIT};
+
+static numberOpens: AtomicUsize = ATOMIC_USIZE_INIT;
 
 #[no_mangle]
 pub fn rust_main() {
     println!("Hello  %d from %d Rust!++", 42, 0);
+    numberOpens.store(0, Ordering::SeqCst);
 }
 
-#[no_mangle]
-pub unsafe fn rust_hello_read_proc(buffer : *const *mut c_char,
-                            start: *const *mut c_char,
-                            offset: c_off,
-                            size: c_int,
-                            eof: *mut c_int,
-                            data: *mut ()) -> c_int {
-    let hello_str = "Hello world!\n\0";
-    let len = raw::strlen(hello_str.as_ptr() as *const i8);
-    if size < len {
-        return - (raw::ERRORS::EINVAL as c_int);
-    }
-    if offset != 0 {
-        return 0;
-    }
-    raw::strcpy(*buffer, hello_str.as_ptr() as *const i8);
-    *eof = 1;
 
-    return 0;
+// I can't currently run bindgen to generate the struct
+// definitions for inode, and it's allmost 100 lines long
+// and full of ifdefs, so I'm just not passing those arguments ATM.
+#[no_mangle]
+pub fn rust_dev_open() -> c_int {
+    let old_num_opens = numberOpens.fetch_add(1, Ordering::SeqCst);
+    println!("ERChar Device has been opened %d times before.",
+             old_num_opens);
+    0
 }
 
 #[no_mangle]

@@ -104,8 +104,7 @@ static void hello_exit(void)
 }
 
 static int dev_open(struct inode *inodep, struct file *filep){
-    numberOpens++;
-    printk(KERN_INFO "ERChar Device has been opened %d times \n", numberOpens);
+    return rust_dev_open();
     return 0;
 }
 
