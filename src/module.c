@@ -48,7 +48,8 @@ static ssize_t dev_read(struct file *, char*, size_t, loff_t *);
 static ssize_t dev_write(struct file *, const char*, size_t, loff_t *);
 
 extern void rust_main(void);
-extern int rust_hello_read_proc(char* buffer, char** start, off_t offset, int size, int *eof, void* data);
+extern int rust_dev_open(void);
+extern int rust_dev_release(void);
 
 static struct file_operations fops = 
 {
@@ -129,8 +130,7 @@ static ssize_t dev_write(struct file *filep, const char* buffer, size_t len, lof
     return len;
 }
 static int dev_release(struct inode* inodep, struct file *filep){
-    printk(KERN_INFO "Device successfully closed\n");
-    return 0;
+    return rust_dev_release();
 }
 
 module_init(hello_init);

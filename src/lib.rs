@@ -46,3 +46,8 @@ pub unsafe fn rust_hello_read_proc(buffer : *const *mut c_char,
     return 0;
 }
 
+#[no_mangle]
+pub fn rust_dev_release() -> c_int {
+    println!("ERChar Device successfully closed");
+    0
+}
