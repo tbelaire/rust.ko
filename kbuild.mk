@@ -8,12 +8,15 @@
 # Name of object file to create by Rust
 rust-target := lib${KERNEL_MODULE}.a
 
+# Tell kbuild where the source files are
+src := ${BASE_DIR}
+
 # Tell kbuild which files to build
 obj-m                 := ${KERNEL_MODULE}.o
 ${KERNEL_MODULE}-objs := $(patsubst %.c,%.o,${C_FILES}) ${rust-target}
+# Locate header files
+ccflags-y := -I${src}/include
 
-# Tell kbuild where the source files are
-src := ${BASE_DIR}
 
 # Fix file paths (since this script will be run from the kbuild's working directory)
 C_FILES    := $(foreach filepath,${C_FILES}   ,${BASE_DIR}/$(filepath))

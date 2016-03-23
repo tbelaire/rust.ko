@@ -5,7 +5,7 @@ export KERNEL_MODULE     := hello
 # Path to the directory where kernel build artifacts should be stored
 export BUILD_DIRECTORY   := build
 # List of C files to compile into this kernel module
-export C_FILES           := $(wildcard src/*.c)
+export C_FILES           := $(wildcard src/*.c) $(wildcard src/usb/*.c)
 # List of all Rust files that will be compiled into this kernel module
 export RUST_FILES        := $(wildcard src/*.rs)
 # Base directory of the Rust compiler
@@ -30,6 +30,7 @@ export BASE_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))
 
 
 all modules: ${BUILD_DIRECTORY}/Makefile
+	mkdir -p build/src/usb
 	@$(MAKE) -C "${KERNEL_BUILD_PATH}" M="${BASE_DIR}/${BUILD_DIRECTORY}" modules
 	cp "${BUILD_DIRECTORY}/${KERNEL_MODULE}.ko" "${KERNEL_MODULE}.ko"
 	$(STRIP) "${KERNEL_MODULE}.ko"
