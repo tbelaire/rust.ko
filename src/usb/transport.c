@@ -416,7 +416,7 @@ EXPORT_SYMBOL_GPL(usb_stor_bulk_transfer_buf);
  * This function does basically the same thing as usb_stor_bulk_transfer_buf()
  * above, but it uses the usbcore scatter-gather library.
  */
-static int usb_stor_bulk_transfer_sglist(struct us_data *us, unsigned int pipe,
+int usb_stor_bulk_transfer_sglist(struct us_data *us, unsigned int pipe,
 		struct scatterlist *sg, int num_sg, unsigned int length,
 		unsigned int *act_len)
 {
@@ -467,13 +467,14 @@ static int usb_stor_bulk_transfer_sglist(struct us_data *us, unsigned int pipe,
 int usb_stor_bulk_srb(struct us_data* us, unsigned int pipe,
 		      struct scsi_cmnd* srb)
 {
-	unsigned int partial;
-	int result = usb_stor_bulk_transfer_sglist(us, pipe, scsi_sglist(srb),
-				      scsi_sg_count(srb), scsi_bufflen(srb),
-				      &partial);
+    return rust_bulk_srb(us, pipe, srb);
+	/* unsigned int partial; */
+	/* int result = usb_stor_bulk_transfer_sglist(us, pipe, scsi_sglist(srb), */
+	/* 			      scsi_sg_count(srb), scsi_bufflen(srb), */
+	/* 			      &partial); */
 
-	scsi_set_resid(srb, scsi_bufflen(srb) - partial);
-	return result;
+	/* scsi_set_resid(srb, scsi_bufflen(srb) - partial); */
+	/* return result; */
 }
 EXPORT_SYMBOL_GPL(usb_stor_bulk_srb);
 
