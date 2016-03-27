@@ -467,14 +467,14 @@ int usb_stor_bulk_transfer_sglist(struct us_data *us, unsigned int pipe,
 int usb_stor_bulk_srb(struct us_data* us, unsigned int pipe,
 		      struct scsi_cmnd* srb)
 {
-    return rust_bulk_srb(us, pipe, srb);
-	/* unsigned int partial; */
-	/* int result = usb_stor_bulk_transfer_sglist(us, pipe, scsi_sglist(srb), */
-	/* 			      scsi_sg_count(srb), scsi_bufflen(srb), */
-	/* 			      &partial); */
+    //return rust_bulk_srb(us, pipe, srb);
+	unsigned int partial;
+	int result = usb_stor_bulk_transfer_sglist(us, pipe, scsi_sglist(srb),
+				      scsi_sg_count(srb), scsi_bufflen(srb),
+				      &partial);
 
-	/* scsi_set_resid(srb, scsi_bufflen(srb) - partial); */
-	/* return result; */
+	scsi_set_resid(srb, scsi_bufflen(srb) - partial);
+	return result;
 }
 EXPORT_SYMBOL_GPL(usb_stor_bulk_srb);
 

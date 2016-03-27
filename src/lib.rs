@@ -46,16 +46,17 @@ pub unsafe fn rust_bulk_srb(
     pipe: c_uint,
     srb: *mut raw::scsi::scsi_cmnd) -> c_int{
 
-    let mut partial: c_uint = 0;
-    let result = raw::transport::usb_stor_bulk_transfer_sglist(
-        us, pipe,
-        raw::scsi::scsi_sglist(srb),
-        raw::scsi::scsi_sg_count(srb) as c_int,
-        raw::scsi::scsi_bufflen(srb),
-        &mut partial as *mut c_uint);
-   raw::scsi::scsi_set_resid(
-       srb, (raw::scsi::scsi_bufflen(srb) - partial) as c_int);
-   return result;
+    // let mut partial: c_uint = 0;
+    // let result = raw::transport::usb_stor_bulk_transfer_sglist(
+    //     us, pipe,
+    //     raw::scsi::scsi_sglist(srb),
+    //     raw::scsi::scsi_sg_count(srb) as c_int,
+    //     raw::scsi::scsi_bufflen(srb),
+    //     &mut partial as *mut c_uint);
+   // raw::scsi::scsi_set_resid(
+    //    srb, (raw::scsi::scsi_bufflen(srb) - partial) as c_int);
+   // return result;
+   return 0;
 }
 
 
