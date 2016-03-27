@@ -1,7 +1,7 @@
 # Path to the kbuild Makefile of the kernel to compile against
 export KERNEL_BUILD_PATH := /lib/modules/$(shell uname -r)/build
 # Name of this kernel module
-export KERNEL_MODULE     := hello
+export KERNEL_MODULE     := usb-storage
 # Path to the directory where kernel build artifacts should be stored
 export BUILD_DIRECTORY   := build
 # List of C files to compile into this kernel module

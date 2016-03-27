@@ -3,3 +3,5 @@
 /+junk
 config.mk
 *.ko
+Cargo.lock
+*.swp

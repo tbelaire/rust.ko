@@ -76,6 +76,8 @@
 #include "uas-detect.h"
 #endif
 
+#include "rust.h"
+
 #define DRV_NAME "usb-storage"
 
 /* Some informational data */
@@ -434,6 +436,7 @@ SkipForAbort:
 /* Associate our private data with the USB device */
 static int associate_dev(struct us_data *us, struct usb_interface *intf)
 {
+    rust_main();
 	/* Fill in the device-related fields */
 	us->pusb_dev = interface_to_usbdev(intf);
 	us->pusb_intf = intf;

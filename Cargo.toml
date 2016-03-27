@@ -1,9 +1,11 @@
 [package]
-name    = "hello"
+# Keep this in sync with the kbuild.mk's rust-target
+name    = "rustmod"
 version = "0.1.0"
 
 [lib]
-name = "hello"
+# Keep this in sync with the kbuild.mk's rust-target
+name = "rustmod"
 crate-type = ["staticlib"]
 
 [dependencies.core]

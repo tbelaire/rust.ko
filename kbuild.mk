@@ -6,7 +6,7 @@
 # project.
 
 # Name of object file to create by Rust
-rust-target := lib${KERNEL_MODULE}.a
+rust-target := librustmod.a
 
 # Tell kbuild where the source files are
 src := ${BASE_DIR}
