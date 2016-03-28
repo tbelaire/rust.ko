@@ -83,8 +83,8 @@ pub struct lockdep_map {
     class_cache: [*mut c_void; 2],
     name: *mut c_char,
     // IF CONFIG_LOCK_STAT
-    cpu: c_int,
-    ip: c_ulong,
+    // cpu: c_int,
+    // ip: c_ulong,
     // END IF
 }
 
@@ -103,7 +103,7 @@ pub struct timer_list {
     start_comm: [c_char; 16],
     // END IF
     // IF CONFIG_LOCKDEP
-    lockdep_map: lockdep_map,
+    //    lockdep_map: lockdep_map,
     // END IF
 }
 #[repr(C)]
@@ -112,7 +112,7 @@ pub struct work_struct {
     entry: list_head,
     func: *const fn(),
     // IF CONFIG_LOCKDEP
-    lockdep_map: lockdep_map,
+    //    lockdep_map: lockdep_map,
     // END IF
 }
 

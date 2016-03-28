@@ -25,7 +25,7 @@ static numberOpens: AtomicUsize = ATOMIC_USIZE_INIT;
 
 #[no_mangle]
 pub fn rust_main() {
-    println!("Hello  %d from %d Rust!++", 42, 0);
+    println!("scsi_cmnd is %d bytes in Rust", core::mem::size_of::<raw::scsi::scsi_cmnd>());
     numberOpens.store(0, Ordering::SeqCst);
 }
 

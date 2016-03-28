@@ -437,15 +437,6 @@ SkipForAbort:
 static int associate_dev(struct us_data *us, struct usb_interface *intf)
 {
     rust_main();
-#ifdef CONFIG_LOCK_STAT
-    usb_stor_dbg(us, "CONFIG_LOCK_STAT is set");
-#endif
-#ifdef CONFIG_TIMER_STATS
-    usb_stor_dbg(us, "CONFIG_TIMER_STATS is set");
-#endif
-#ifdef CONFIG_LOCKDEP
-    usb_stor_dbg(us, "CONFIG_LOCKDEP is set");
-#endif
 
 	/* Fill in the device-related fields */
 	us->pusb_dev = interface_to_usbdev(intf);
@@ -459,6 +450,17 @@ static int associate_dev(struct us_data *us, struct usb_interface *intf)
 		     intf->cur_altsetting->desc.bInterfaceSubClass,
 		     intf->cur_altsetting->desc.bInterfaceProtocol);
 
+#ifdef CONFIG_LOCK_STAT
+    usb_stor_dbg(us, "CONFIG_LOCK_STAT is set");
+#endif
+#ifdef CONFIG_TIMER_STATS
+    usb_stor_dbg(us, "CONFIG_TIMER_STATS is set");
+#endif
+#ifdef CONFIG_LOCKDEP
+    usb_stor_dbg(us, "CONFIG_LOCKDEP is set");
+#endif
+
+    usb_stor_dbg(us, "scsi_cmnd is %d bytes in C", sizeof(struct scsi_cmnd));
 	/* Store our private data in the interface */
 	usb_set_intfdata(intf, us);
 
