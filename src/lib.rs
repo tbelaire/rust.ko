@@ -19,6 +19,7 @@ pub mod types;
 use types :: *;
 
 use core::str::StrExt;
+use core::ptr;
 use core::sync::atomic::{AtomicUsize, Ordering, ATOMIC_USIZE_INIT};
 
 static numberOpens: AtomicUsize = ATOMIC_USIZE_INIT;
@@ -57,21 +58,39 @@ pub fn rust_dev_read(_file: *mut file,
                      offset: *mut c_off) -> ssize_t {
     let error_count;
 
-    unsafe{
+    unsafe {
     error_count = raw::my_copy_to_user(buffer as *mut u8,
                                        &message as *const u8,
                                        size_of_message as c_ulong);
     }
     if error_count == 0 {
-        println!("ERchar: Sent %d characters to the user", size_of_message);
+        println!("ERchar: Sent %d characters to the user.", size_of_message);
         unsafe {
             size_of_message = 0;
         }
         return 0;
     } else {
-        println!("ERchar: Failed to send %d characters to the user",
+        println!("ERchar: Failed to send %d characters to the user.",
                  error_count);
         return -(raw::ERRORS::EFAULT as ssize_t);
+    }
+}
+
+fn rot_13(mut ch: u8) -> u8 {
+    if ch >= 'A' as u8 && ch <= 'Z' as u8 {
+        ch += 13;
+        if ch > 'Z' as u8 {
+            ch -= 26;
+        }
+        ch
+    } else if ch >= 'a' as u8 && ch <= 'z' as u8 {
+        ch += 13;
+        if ch > 'z' as u8 {
+            ch -= 26;
+        }
+        ch
+    } else {
+        ch
     }
 }
 
@@ -81,10 +100,12 @@ pub fn rust_dev_write(_file: *mut file,
                       len: size_t,
                       offset: *mut c_off) -> ssize_t {
     unsafe {
-        message[0] = 'A' as u8;
-        size_of_message = 2;
+        for i in 0..len {
+            message[i] = rot_13(*buffer.offset(i as isize) as u8);
+        }
+        size_of_message = len;
     }
-    println!("ERChar: Totally didn't ignore %d chars", len);
+    println!("ERChar: Rotated %d characters.", len);
     return len as ssize_t;
 }
 
