@@ -44,6 +44,7 @@ pub type c_wchar = u32;
 // Standard integers
 pub type c_int = i32;
 pub type c_long = i32; // TODO check this?
+pub type c_ulong = u32; // TODO check this?
 pub type c_off = c_long;
 
 // The special "size" type
@@ -51,3 +52,10 @@ pub type c_off = c_long;
 pub type size_t = u32;
 #[cfg(target_arch_std64)]
 pub type size_t = u64;
+#[cfg(target_arch_std32)]
+pub type ssize_t = i32;
+#[cfg(target_arch_std64)]
+pub type ssize_t = i64;
+
+pub type size_t = usize;
+pub type ssize_t = isize;

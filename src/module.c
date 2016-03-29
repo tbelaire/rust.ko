@@ -42,6 +42,12 @@ void free(void *ptr)
     kfree(ptr);
 }
 
+long my_copy_to_user(void __user *to,
+        const void* from, unsigned long n)
+{
+    return copy_to_user(to, from, n);
+}
+
 static int dev_open(struct inode *, struct file *);
 static int dev_release(struct inode *, struct file *);
 static ssize_t dev_read(struct file *, char*, size_t, loff_t *);
@@ -50,6 +56,8 @@ static ssize_t dev_write(struct file *, const char*, size_t, loff_t *);
 extern void rust_main(void);
 extern int rust_dev_open(void);
 extern int rust_dev_release(void);
+extern ssize_t rust_dev_read(char*, size_t, loff_t *);
+extern ssize_t rust_dev_write(const char*, ssize_t, loff_t*);
 
 static struct file_operations fops = 
 {
@@ -105,10 +113,10 @@ static void hello_exit(void)
 
 static int dev_open(struct inode *inodep, struct file *filep){
     return rust_dev_open();
-    return 0;
 }
 
 static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t * offset){
+    return rust_dev_read(buffer, len, offset);
     int error_count = 0;
 
     error_count = copy_to_user(buffer, message, size_of_message);
@@ -123,6 +131,8 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t * o
     }
 }
 static ssize_t dev_write(struct file *filep, const char* buffer, size_t len, loff_t *offset){
+    return rust_dev_write(buffer, len, offset);
+
     sprintf(message, "%s(%zu letters)", buffer, len);
     size_of_message = strlen(message);
     printk(KERN_INFO "ERChar: Received %zu characters from the user\n", len);
