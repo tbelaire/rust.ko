@@ -52,7 +52,7 @@ clean:
 	$(CARGO) clean
 
 testebbchar : tests/testebbchar.c
-	gcc src/testebbchar.c -o testebbchar
+	gcc tests/testebbchar.c -o testebbchar
 
 test: ${KERNEL_MODULE}.ko testebbchar
 	sudo insmod "${KERNEL_MODULE}.ko"
