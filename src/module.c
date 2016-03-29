@@ -17,9 +17,6 @@ MODULE_DESCRIPTION("A simple Linux char device for exploring Rust");
 MODULE_VERSION("0.1");
 
 static int majorNumber;
-static char message[256] = {0};
-static short size_of_message;
-static int numberOpens = 0;
 static struct class* ercharClass = NULL;
 static struct device* ercharDevice = NULL;
 
@@ -48,23 +45,18 @@ long my_copy_to_user(void __user *to,
     return copy_to_user(to, from, n);
 }
 
-static int dev_open(struct inode *, struct file *);
-static int dev_release(struct inode *, struct file *);
-static ssize_t dev_read(struct file *, char*, size_t, loff_t *);
-static ssize_t dev_write(struct file *, const char*, size_t, loff_t *);
-
 extern void rust_main(void);
-extern int rust_dev_open(void);
-extern int rust_dev_release(void);
-extern ssize_t rust_dev_read(char*, size_t, loff_t *);
-extern ssize_t rust_dev_write(const char*, ssize_t, loff_t*);
+extern int rust_dev_open(struct inode*, struct file*);
+extern int rust_dev_release(struct inode*, struct file*);
+extern ssize_t rust_dev_read(struct file*, char*, size_t, loff_t *);
+extern ssize_t rust_dev_write(struct file*, const char*, size_t, loff_t*);
 
-static struct file_operations fops = 
+static struct file_operations fops =
 {
-    .open = dev_open,
-    .read = dev_read,
-    .write = dev_write,
-    .release = dev_release,
+    .open = rust_dev_open,
+    .read = rust_dev_read,
+    .write = rust_dev_write,
+    .release = rust_dev_release,
 };
 
 static int hello_init(void)
@@ -109,37 +101,6 @@ static void hello_exit(void)
     class_unregister(ercharClass);
     class_destroy(ercharClass);
     unregister_chrdev(majorNumber, DEVICE_NAME);
-}
-
-static int dev_open(struct inode *inodep, struct file *filep){
-    return rust_dev_open();
-}
-
-static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t * offset){
-    return rust_dev_read(buffer, len, offset);
-    int error_count = 0;
-
-    error_count = copy_to_user(buffer, message, size_of_message);
-
-    if(error_count == 0){
-        printk(KERN_INFO "ERChar: Sent %d characters to the user\n", size_of_message);
-        size_of_message = 0;
-        return 0;
-    } else {
-        printk(KERN_INFO "ERChar: Failed to send %d characters to the user\n", error_count);
-        return -EFAULT;
-    }
-}
-static ssize_t dev_write(struct file *filep, const char* buffer, size_t len, loff_t *offset){
-    return rust_dev_write(buffer, len, offset);
-
-    sprintf(message, "%s(%zu letters)", buffer, len);
-    size_of_message = strlen(message);
-    printk(KERN_INFO "ERChar: Received %zu characters from the user\n", len);
-    return len;
-}
-static int dev_release(struct inode* inodep, struct file *filep){
-    return rust_dev_release();
 }
 
 module_init(hello_init);

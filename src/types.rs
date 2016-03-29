@@ -59,3 +59,6 @@ pub type ssize_t = i64;
 
 pub type size_t = usize;
 pub type ssize_t = isize;
+
+pub enum file{}
+pub enum inode{}

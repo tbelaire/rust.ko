@@ -37,7 +37,7 @@ pub fn rust_main() {
 // definitions for inode, and it's allmost 100 lines long
 // and full of ifdefs, so I'm just not passing those arguments ATM.
 #[no_mangle]
-pub fn rust_dev_open() -> c_int {
+pub fn rust_dev_open(_inode: *mut inode, _file: *mut file) -> c_int {
     let old_num_opens = numberOpens.fetch_add(1, Ordering::SeqCst);
     println!("ERChar Device has been opened %d times before.",
              old_num_opens);
@@ -45,16 +45,17 @@ pub fn rust_dev_open() -> c_int {
 }
 
 #[no_mangle]
-pub fn rust_dev_release() -> c_int {
+pub fn rust_dev_release(_inode: *mut inode, _file: *mut file) -> c_int {
     println!("ERChar Device successfully closed");
     0
 }
 
 #[no_mangle]
-pub fn rust_dev_read(buffer: *mut c_char,
+pub fn rust_dev_read(_file: *mut file,
+                     buffer: *mut c_char,
                      len: size_t,
                      offset: *mut c_off) -> ssize_t {
-    let mut error_count = 0;
+    let error_count;
 
     unsafe{
     error_count = raw::my_copy_to_user(buffer as *mut u8,
@@ -75,7 +76,8 @@ pub fn rust_dev_read(buffer: *mut c_char,
 }
 
 #[no_mangle]
-pub fn rust_dev_write(buffer: *const c_char,
+pub fn rust_dev_write(_file: *mut file,
+                      buffer: *const c_char,
                       len: size_t,
                       offset: *mut c_off) -> ssize_t {
     unsafe {
@@ -85,8 +87,5 @@ pub fn rust_dev_write(buffer: *const c_char,
     println!("ERChar: Totally didn't ignore %d chars", len);
     return len as ssize_t;
 }
-
-
-
 
 
