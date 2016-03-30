@@ -29,22 +29,11 @@ void abort(void)
     BUG();
 }
 
-void *malloc(size_t s)
-{
-    return kmalloc(s, GFP_KERNEL);
-}
-
-void free(void *ptr)
-{
-    kfree(ptr);
-}
-
 long my_copy_to_user(void __user *to,
         const void* from, unsigned long n)
 {
     return copy_to_user(to, from, n);
 }
-
 extern void rust_main(void);
 extern int rust_dev_open(struct inode*, struct file*);
 extern int rust_dev_release(struct inode*, struct file*);
