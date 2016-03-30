@@ -32,16 +32,6 @@ void abort(void)
     BUG();
 }
 
-void *malloc(size_t s)
-{
-    return kmalloc(s, GFP_KERNEL);
-}
-
-void free(void *ptr)
-{
-    kfree(ptr);
-}
-
 static int dev_open(struct inode *, struct file *);
 static int dev_release(struct inode *, struct file *);
 static ssize_t dev_read(struct file *, char*, size_t, loff_t *);
