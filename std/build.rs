@@ -22,7 +22,7 @@ const CLANG_ARGS_BLACKLIST: [&'static str; 10] = [
 	"-mno-80387", "-mno-fp-ret-in-387", "-mskip-rax-setup", "-maccumulate-outgoing-args",
 	"-mpreferred-stack-boundary=3", "-mfentry",
 	"-fno-var-tracking-assignments", "-fconserve-stack", "-DCC_HAVE_ASM_GOTO",
-	"-fno-delete-null-pointer-checks",
+	"-fno-delete-null-pointer-checks"
 ];
 
 
