@@ -4,10 +4,11 @@ name    = "rustmod"
 version = "0.1.0"
 
 [lib]
-# Keep this in sync with the kbuild.mk's rust-target
-name = "rustmod"
 crate-type = ["staticlib"]
 
 [dependencies.core]
 git = "https://github.com/phil-opp/nightly-libcore.git"
 features = ["disable_float"]
+
+[dependencies.linux-std]
+path = "std"
