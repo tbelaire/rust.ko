@@ -48,6 +48,7 @@
 #include <scsi/scsi.h>
 #include <scsi/scsi_cmnd.h>
 #include <scsi/scsi_dbg.h>
+#include <linux/kern_levels.h>
 
 #include "usb.h"
 #include "debug.h"

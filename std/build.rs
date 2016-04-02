@@ -79,6 +79,26 @@ fn main() {
 			panic!("Missing environment variable STD_CLANG_FILES: {:?}", error);
 		}
 	};
+	let clang_local_include_files = match std::env::var("LOCAL_CLANG_FILES") {
+		Ok(string) =>
+			match shlex::split(string.as_str()) {
+				Some(args) => args,
+				None => {
+					panic("Malformed environment variable LOCAL_CLANG_FILES");
+				}
+			},
+		Err(error) => []
+	};
+    let clang_local_include_dir = match std::env::var("LOCAL_CLANG_INCLUDE") {
+        Ok(string) => Some(string),
+        Err(error) => {
+            if clang_local_include_files.len() == 0 {
+                None
+            } else {
+                Some("".to_string())
+            }
+        }
+    };
 	let kernel_path = match std::env::var("STD_KERNEL_PATH") {
 		Ok(string) => string,
 		Err(error) => {
@@ -110,6 +130,8 @@ fn main() {
 	options.clang_args.push(String::from("-Dfalse=__false"));
 	options.clang_args.push(String::from("-Dtrue=__true"));
 	options.clang_args.push(String::from("-Du64=__u64"));
+	// Include extra header files in include/
+	options.clang_args.push(format!("-isystem {}", EXTRA_INCLUDES_FOLDER));
 	
 	// Tell clang to process the generated header file
 	options.clang_args.push(filepath_header.clone());

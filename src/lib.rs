@@ -13,7 +13,8 @@ static numberOpens: AtomicUsize = ATOMIC_USIZE_INIT;
 
 #[no_mangle]
 pub fn rust_main() {
-    println!("scsi_cmnd is %d bytes in Rust", core::mem::size_of::<raw::scsi::scsi_cmnd>());
+    println!("scsi_cmnd is %d bytes in Rust",
+             core::mem::size_of::<raw::scsi::scsi_cmnd>());
     numberOpens.store(0, Ordering::SeqCst);
 }
 
@@ -30,7 +31,7 @@ pub fn rust_bulk_transfer_buf(
 
 #[no_mangle]
 pub unsafe fn rust_bulk_srb(
-    us: *mut raw::transport::us_data,
+    us: *mut ::us_data,
     pipe: c_uint,
     srb: *mut raw::scsi::scsi_cmnd) -> c_int{
 
