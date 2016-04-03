@@ -15,7 +15,8 @@ export KERNEL_INCLUDE    := \
 	linux/sched.h \
 	linux/slab.h \
 	linux/utsname.h \
-	linux/usb/quirks.h
+	linux/usb/quirks.h \
+	linux/usb/storage.h
 export LOCAL_INCLUDE    := \
 	scsi/scsi.h \
 	scsi/scsi_eh.h \
@@ -24,7 +25,8 @@ export LOCAL_INCLUDE    := \
 	usb.h \
 	transport.h \
 	protocol.h \
-	scsiglue.h
+	scsiglue.h \
+	helper.h
 
 
 # Path to the directory where kernel build artifacts should be stored

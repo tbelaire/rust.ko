@@ -18,13 +18,15 @@ const CLANG_HEADER_REQUIRED: [&'static str; 3] = [
 ];
 
 /// List of parameters not ever to pass to the clang parser of rust-bindgen
-const CLANG_ARGS_BLACKLIST: [&'static str; 12] = [
+const CLANG_ARGS_BLACKLIST: [&'static str; 14] = [
 	"-mno-80387", "-mno-fp-ret-in-387", "-mskip-rax-setup", "-maccumulate-outgoing-args",
 	"-mpreferred-stack-boundary=3", "-mfentry",
 	"-fno-var-tracking-assignments", "-fconserve-stack", "-DCC_HAVE_ASM_GOTO",
 	"-fno-delete-null-pointer-checks",
 	"-falign-jumps=1",
 	"-falign-loops=1",
+    "--param allow-store-data-races=0",
+    "-Wno-unused-but-set-variable",
 ];
 
 

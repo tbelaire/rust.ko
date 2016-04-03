@@ -1073,7 +1073,8 @@ int usb_stor_Bulk_transport(struct scsi_cmnd *srb, struct us_data *us)
 	unsigned int cswlen;
 	unsigned int cbwlen = US_BULK_CB_WRAP_LEN;
 
-    rust_main();
+	return rust_Bulk_transport(srb, us);
+
 	/* Take care of BULK32 devices; set extra byte to 0 */
 	if (unlikely(us->fflags & US_FL_BULK32)) {
 		cbwlen = 32;
