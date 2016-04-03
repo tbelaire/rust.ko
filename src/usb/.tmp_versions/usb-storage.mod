@@ -1,2 +1,0 @@
-/home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/usb-storage.ko
-/home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/scsiglue.o /home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/protocol.o /home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/transport.o /home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/usb.o /home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/initializers.o /home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/sierra_ms.o /home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/option_ms.o /home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/usual-tables.o

@@ -1,1 +1,0 @@
-cmd_/home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/usb-storage.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/usb-storage.ko /home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/usb-storage.o /home/tbelaire/Code/linux-4.4.6/drivers/usb/storage/usb-storage.mod.o

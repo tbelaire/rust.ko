@@ -1,4 +1,4 @@
-#![feature(custom_attribute, lang_items)]
+#![feature(core_str_ext, custom_attribute, lang_items)]
 #![no_std]
 
 #[macro_use]
@@ -13,8 +13,6 @@ static numberOpens: AtomicUsize = ATOMIC_USIZE_INIT;
 
 #[no_mangle]
 pub fn rust_main() {
-    println!("scsi_cmnd is %d bytes in Rust",
-             core::mem::size_of::<raw::scsi::scsi_cmnd>());
     numberOpens.store(0, Ordering::SeqCst);
 }
 
@@ -29,9 +27,10 @@ pub fn rust_bulk_transfer_buf(
 }
 */
 
+/*
 #[no_mangle]
 pub unsafe fn rust_bulk_srb(
-    us: *mut ::us_data,
+    us: *mut raw::transport::us_data,
     pipe: c_uint,
     srb: *mut raw::scsi::scsi_cmnd) -> c_int{
 
@@ -48,4 +47,4 @@ pub unsafe fn rust_bulk_srb(
    return 0;
 }
 
-
+*/

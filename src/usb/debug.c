@@ -48,11 +48,9 @@
 #include <scsi/scsi.h>
 #include <scsi/scsi_cmnd.h>
 #include <scsi/scsi_dbg.h>
-#include <linux/kern_levels.h>
 
 #include "usb.h"
 #include "debug.h"
-#include "scsi/scsi.h"
 
 
 void usb_stor_show_command(const struct us_data *us, struct scsi_cmnd *srb)
