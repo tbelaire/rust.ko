@@ -81,15 +81,15 @@ fn main() {
 			panic!("Missing environment variable STD_CLANG_FILES: {:?}", error);
 		}
 	};
-	let clang_local_include_files = match std::env::var("LOCAL_CLANG_FILES") {
+	let clang_local_include_files: Vec<String> = match std::env::var("LOCAL_CLANG_FILES") {
 		Ok(string) =>
 			match shlex::split(string.as_str()) {
 				Some(args) => args,
 				None => {
-					panic("Malformed environment variable LOCAL_CLANG_FILES");
+					panic!("Malformed environment variable LOCAL_CLANG_FILES");
 				}
 			},
-		Err(error) => []
+		Err(error) => vec![]
 	};
     let clang_local_include_dir = match std::env::var("LOCAL_CLANG_INCLUDE") {
         Ok(string) => Some(string),
@@ -132,6 +132,11 @@ fn main() {
 	options.clang_args.push(String::from("-Dfalse=__false"));
 	options.clang_args.push(String::from("-Dtrue=__true"));
 	options.clang_args.push(String::from("-Du64=__u64"));
+
+    // Tell clang where to find the extra local includes.
+    if let Some(include_dir) = clang_local_include_dir {
+        options.clang_args.push(format!("-I{}", include_dir));
+    }
 	
 	// Tell clang to process the generated header file
 	options.clang_args.push(filepath_header.clone());
@@ -147,6 +152,11 @@ fn main() {
 			// Generate include lines for headers required by linux-std itself
 			for clang_file in CLANG_HEADER_REQUIRED.iter() {
 				writeln!(file, "#include <{}>", clang_file).unwrap();
+			}
+
+            // Generate local include lines for local headers.
+			for clang_file in clang_local_include_files.iter() {
+				writeln!(file, "#include \"{}\"", clang_file).unwrap();
 			}
 		},
 		Err(error) => {

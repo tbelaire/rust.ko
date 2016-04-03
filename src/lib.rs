@@ -4,6 +4,9 @@
 #[macro_use]
 extern crate linux_std as std;
 
+use std::os::raw::*;
+use std::os::kernel;
+
 // Defines various language items that need to be around
 mod lang;
 use core::str::StrExt;
@@ -14,6 +17,8 @@ static numberOpens: AtomicUsize = ATOMIC_USIZE_INIT;
 #[no_mangle]
 pub fn rust_main() {
     numberOpens.store(0, Ordering::SeqCst);
+    let _foo: kernel::Struct_us_data;
+
 }
 
 /*
