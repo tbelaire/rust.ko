@@ -57,7 +57,7 @@ testebbchar : tests/testebbchar.c
 	gcc tests/testebbchar.c -o testebbchar
 
 timeit : tests/timeit.c
-	gcc -O tests/timeit.c -o timeit
+	gcc tests/timeit.c -o timeit
 
 test: ${KERNEL_MODULE}.ko testebbchar
 	sudo insmod "${KERNEL_MODULE}.ko"
