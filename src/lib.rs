@@ -20,7 +20,7 @@ static mut size_of_message: usize = 0;
 
 #[no_mangle]
 pub fn rust_main() {
-    println!("Hello {} from {} Rust!++", 42, 0);
+    // println!("Hello {} from {} Rust!++", 42, 0);
     numberOpens.store(0, Ordering::SeqCst);
 }
 
@@ -31,14 +31,14 @@ pub fn rust_main() {
 #[no_mangle]
 pub fn rust_dev_open(_inode: *mut kernel::Struct_inode, _file: *mut kernel::Struct_file) -> c_int {
     let old_num_opens = numberOpens.fetch_add(1, Ordering::SeqCst);
-    println!("ERChar Device has been opened {} times before.",
-             old_num_opens);
+    // println!("ERChar Device has been opened {} times before.",
+             // old_num_opens);
     0
 }
 
 #[no_mangle]
 pub fn rust_dev_release(_inode: *mut kernel::Struct_inode, _file: *mut kernel::Struct_file) -> c_int {
-    println!("ERChar Device successfully closed");
+    // println!("ERChar Device successfully closed");
     0
 }
 
@@ -56,15 +56,15 @@ pub fn rust_dev_read(_file: *mut kernel::Struct_file,
     }
     if error_count == 0 {
         unsafe{
-            println!("ERchar: Sent {} characters to the user.", size_of_message);
+            // println!("ERchar: Sent {} characters to the user.", size_of_message);
         }
         unsafe {
             size_of_message = 0;
         }
         return 0;
     } else {
-        println!("ERchar: Failed to send {} characters to the user.",
-                 error_count);
+        // println!("ERchar: Failed to send {} characters to the user.",
+                 // error_count);
         return -(std::os::errors::ERROR::EFAULT as kernel::ssize_t);
     }
 }
@@ -98,7 +98,7 @@ pub fn rust_dev_write(_file: *mut kernel::Struct_file,
         }
         size_of_message = len as usize;
     }
-    println!("ERChar: Rotated {} characters.", len);
+    // println!("ERChar: Rotated {} characters.", len);
     return len as kernel::ssize_t;
 }
 

@@ -50,23 +50,23 @@ static struct file_operations fops =
 
 static int hello_init(void)
 {
-    printk(KERN_INFO "hello: init\n");
+    printk(KERN_INFO "rot13-rust: init\n");
     rust_main();
     majorNumber = register_chrdev(0, DEVICE_NAME, &fops);
 
     if (majorNumber < 0) {
-        printk(KERN_ALERT "ERChar failed to register a major number\n");
+        printk(KERN_ALERT "rot13-rust: failed to register a major number\n");
         return majorNumber;
     }
-    printk(KERN_INFO "ERChar: registered correctly with major number %d\n", majorNumber);
+    printk(KERN_INFO "rot13-rust: registered correctly with major number %d\n", majorNumber);
 
     ercharClass = class_create(THIS_MODULE, CLASS_NAME);
     if (IS_ERR(ercharClass)){
         unregister_chrdev(majorNumber, DEVICE_NAME);
-        printk(KERN_ALERT "ERChar failed to register device class\n");
+        printk(KERN_ALERT "rot13-rust: failed to register device class\n");
         return PTR_ERR(ercharClass);
     }
-    printk(KERN_INFO "ERChar created class correctly\n");
+    printk(KERN_INFO "rot13-rust: created class correctly\n");
 
     ercharDevice = device_create(ercharClass, NULL, MKDEV(majorNumber, 0),
             NULL, DEVICE_NAME);
@@ -75,17 +75,17 @@ static int hello_init(void)
         class_unregister(ercharClass); // ???
         class_destroy(ercharClass);
         unregister_chrdev(majorNumber, DEVICE_NAME);
-        printk(KERN_ALERT "ERChar failed to register device class\n");
+        printk(KERN_ALERT "rot13-rust: failed to register device class\n");
         return PTR_ERR(ercharDevice);
     }
 
-    printk(KERN_INFO "ERChar: Device created successfully\n");
+    printk(KERN_INFO "rot13-rust: Device created successfully\n");
     return 0;
 }
 
 static void hello_exit(void)
 {
-    printk(KERN_INFO "hello: exit\n");
+    printk(KERN_INFO "rot13-rust: exit\n");
     device_destroy(ercharClass, MKDEV(majorNumber, 0));
     class_unregister(ercharClass);
     class_destroy(ercharClass);
