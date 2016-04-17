@@ -34,25 +34,18 @@ long my_copy_to_user(void __user *to,
 {
     return copy_to_user(to, from, n);
 }
-extern void rust_main(void);
-extern int rust_dev_open(struct inode*, struct file*);
-extern int rust_dev_release(struct inode*, struct file*);
-extern ssize_t rust_dev_read(struct file*, char*, size_t, loff_t *);
-extern ssize_t rust_dev_write(struct file*, const char*, size_t, loff_t*);
-
-static struct file_operations fops =
+int my_register_chrdev(unsigned int major, const char *name,
+        const struct file_operations *fops)
 {
-    .open = rust_dev_open,
-    .read = rust_dev_read,
-    .write = rust_dev_write,
-    .release = rust_dev_release,
-};
+    return __register_chrdev(major, 0, 256, name, fops);
+}
+extern int rust_main(void);
 
 static int hello_init(void)
 {
     printk(KERN_INFO "rot13-rust: init\n");
-    rust_main();
-    majorNumber = register_chrdev(0, DEVICE_NAME, &fops);
+    // majorNumber = register_chrdev(0, DEVICE_NAME, &fops);
+    majorNumber = rust_main();
 
     if (majorNumber < 0) {
         printk(KERN_ALERT "rot13-rust: failed to register a major number\n");
