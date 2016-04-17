@@ -32,12 +32,14 @@ pub fn rust_main() {
 pub fn rust_dev_open(_inode: *mut kernel::Struct_inode, _file: *mut kernel::Struct_file) -> c_int {
     let old_num_opens = numberOpens.fetch_add(1, Ordering::SeqCst);
     // println!("ERChar Device has been opened {} times before.",
-             // old_num_opens);
+    // old_num_opens);
     0
 }
 
 #[no_mangle]
-pub fn rust_dev_release(_inode: *mut kernel::Struct_inode, _file: *mut kernel::Struct_file) -> c_int {
+pub fn rust_dev_release(_inode: *mut kernel::Struct_inode,
+                        _file: *mut kernel::Struct_file)
+                        -> c_int {
     // println!("ERChar Device successfully closed");
     0
 }
@@ -46,16 +48,17 @@ pub fn rust_dev_release(_inode: *mut kernel::Struct_inode, _file: *mut kernel::S
 pub fn rust_dev_read(_file: *mut kernel::Struct_file,
                      buffer: *mut c_char,
                      len: kernel::size_t,
-                     offset: *mut kernel::off_t) -> kernel::ssize_t {
+                     offset: *mut kernel::off_t)
+                     -> kernel::ssize_t {
     let error_count;
 
     unsafe {
-    error_count = kernel::_copy_to_user(buffer as *mut c_void,
-                                        (&message) as *const u8 as *const c_void,
-                                        size_of_message as c_uint);
+        error_count = kernel::_copy_to_user(buffer as *mut c_void,
+                                            (&message) as *const u8 as *const c_void,
+                                            size_of_message as c_uint);
     }
     if error_count == 0 {
-        unsafe{
+        unsafe {
             // println!("ERchar: Sent {} characters to the user.", size_of_message);
         }
         unsafe {
@@ -64,7 +67,7 @@ pub fn rust_dev_read(_file: *mut kernel::Struct_file,
         return 0;
     } else {
         // println!("ERchar: Failed to send {} characters to the user.",
-                 // error_count);
+        // error_count);
         return -(std::os::errors::ERROR::EFAULT as kernel::ssize_t);
     }
 }
@@ -91,9 +94,10 @@ fn rot_13(mut ch: u8) -> u8 {
 pub fn rust_dev_write(_file: *mut kernel::Struct_file,
                       buffer: *const c_char,
                       len: kernel::size_t,
-                      offset: *mut kernel::off_t) -> kernel::ssize_t {
+                      offset: *mut kernel::off_t)
+                      -> kernel::ssize_t {
     unsafe {
-        for i in 0..len as usize{
+        for i in 0..len as usize {
             message[i] = rot_13(*buffer.offset(i as isize) as u8);
         }
         size_of_message = len as usize;
@@ -101,5 +105,3 @@ pub fn rust_dev_write(_file: *mut kernel::Struct_file,
     // println!("ERChar: Rotated {} characters.", len);
     return len as kernel::ssize_t;
 }
-
-
