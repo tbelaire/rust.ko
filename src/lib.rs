@@ -1,4 +1,4 @@
-#![feature(custom_attribute, lang_items, core_str_ext)]
+#![feature(custom_attribute, lang_items, core_str_ext, const_fn)]
 #![no_std]
 
 #[macro_use]
@@ -17,7 +17,36 @@ static NUMBER_OPENS: AtomicUsize = ATOMIC_USIZE_INIT;
 // This is unsafe, please make a re-entraint version.
 static mut message: [u8; 256] = [0; 256];
 static mut size_of_message: usize = 0;
-static mut fops: Option<kernel::Struct_file_operations> = None;
+static mut fops: kernel::Struct_file_operations =
+    kernel::Struct_file_operations {
+        read: Some(rust_dev_read),
+        write: Some(rust_dev_write),
+        open: Some(rust_dev_open),
+        release: Some(rust_dev_release),
+        owner: core::ptr::null_mut(),
+        llseek: None,
+        read_iter: None,
+        write_iter: None,
+        iterate: None,
+        poll: None,
+        unlocked_ioctl: None,
+        compat_ioctl: None,
+        mmap: None,
+        flush: None,
+        fsync: None,
+        aio_fsync: None,
+        fasync: None,
+        lock: None,
+        sendpage: None,
+        get_unmapped_area: None,
+        check_flags: None,
+        flock: None,
+        splice_write: None,
+        splice_read: None,
+        setlease: None,
+        fallocate: None,
+        show_fdinfo: None,
+    };
 
 const DEVICE_NAME: &'static str = "erchar\0";
 const CLASS_NAME: &'static str = "er\0";
@@ -26,21 +55,9 @@ const CLASS_NAME: &'static str = "er\0";
 pub unsafe extern "C" fn rust_main() -> c_int {
     // println!("Hello {} from {} Rust!++", 42, 0);
     NUMBER_OPENS.store(0, Ordering::SeqCst);
-    fops = Some(kernel::Struct_file_operations::default());
-    if let Some(ref mut fops_) = fops {
-        fops_.open = Some(rust_dev_open);
-        fops_.read = Some(rust_dev_read);
-        fops_.write = Some(rust_dev_write);
-        fops_.release = Some(rust_dev_release);
-        let major_number =
-            my_register_chrdev(0,
-                               DEVICE_NAME.as_ptr() as *const c_char,
-                               &fops_);
-
-        major_number
-    } else {
-        unreachable!();
-    }
+    let major_number =
+        my_register_chrdev(0, DEVICE_NAME.as_ptr() as *const c_char, &fops);
+    major_number
 }
 
 
