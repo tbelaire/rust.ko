@@ -1,0 +1,13 @@
+[package]
+authors = ["The Rust Project Developers"]
+name = "alloc"
+version = "0.0.0"
+
+[lib]
+name = "alloc"
+path = "lib.rs"
+test = false
+
+[dependencies.core]
+git = "https://github.com/phil-opp/nightly-libcore.git"
+features = ["disable_float"]

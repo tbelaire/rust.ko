@@ -1,0 +1,8 @@
+[package]
+name = "kmalloc_allocator"
+version = "0.1.0"
+authors = ["tbelaire <theo.belaire@gmail.com>"]
+
+[dependencies.core]
+git = "https://github.com/phil-opp/nightly-libcore.git"
+features = ["disable_float"]

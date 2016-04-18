@@ -60,6 +60,9 @@ static mut erchar_device: *mut kernel::Struct_device = core::ptr::null_mut();
 pub unsafe extern "C" fn rust_main() -> c_int {
     println!("rot13-rust: initializing");
     NUMBER_OPENS.store(0, Ordering::SeqCst);
+
+    let x = std::alloc::boxed::Box::new(32);
+
     major_number = my_register_chrdev(0,
                                       DEVICE_NAME.as_ptr() as *const c_char,
                                       &fops);
@@ -87,7 +90,7 @@ pub unsafe extern "C" fn rust_main() -> c_int {
                               core::ptr::null_mut(),
                               DEVICE_NAME.as_ptr() as *const c_char);
 
-    if (erchar_device as usize) < 0 {
+    if (erchar_device as isize) < 0 {
         kernel::class_unregister(erchar_class); // ???
         kernel::class_destroy(erchar_class);
         my_unregister_chrdev(major_number as c_uint,

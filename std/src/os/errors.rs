@@ -34,4 +34,3 @@ pub enum ERROR {
     EDOM = 33,
     ERANGE = 34,
 }
-

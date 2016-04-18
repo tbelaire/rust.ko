@@ -9,5 +9,8 @@ crate-type = ["staticlib"]
 git = "https://github.com/phil-opp/nightly-libcore.git"
 features = ["disable_float"]
 
+[dependencies.kmalloc_allocator]
+path = "std/kmalloc_allocator"
+
 [dependencies.linux-std]
 path = "std"
