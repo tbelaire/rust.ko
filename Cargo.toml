@@ -12,5 +12,6 @@ features = ["disable_float"]
 [dependencies.kmalloc_allocator]
 path = "std/kmalloc_allocator"
 
-[dependencies.linux-std]
-path = "std"
+[dependencies.alloc]
+path = "std/liballoc"
+
