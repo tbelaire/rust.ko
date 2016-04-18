@@ -144,7 +144,7 @@ pub unsafe extern "C" fn rust_dev_read(_file: *mut kernel::Struct_file,
                               (&message) as *const u8 as *const c_void,
                               size_of_message as c_uint);
     if error_count == 0 {
-        println!("rot13-rust:: Sent {} characters to the user.",
+        println!("rot13-rust: Sent {} characters to the user.",
                  size_of_message);
         size_of_message = 0;
         return 0;
